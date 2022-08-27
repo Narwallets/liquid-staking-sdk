@@ -103,5 +103,25 @@ describe('Metapool', () => {
     })
   })
 
+  describe('delayedUnstake', () => {
+
+    it('delayed-unstakes', async() => {
+      const preUnstakeBalance = await metapool.get_account_unstaked_balance(TEST_USER)
+      console.log("preUnstakeBalance",ytonFull(preUnstakeBalance))
+
+      const amountYoctoStNear = new BN("1"+"0".repeat(24))
+
+      const rawResult = await metapool.unstake(amountYoctoStNear)
+      const postUnstakeBalance = await metapool.get_account_unstaked_balance(TEST_USER)
+      console.log("postUnstakeBalance",ytonFull(postUnstakeBalance))
+     
+      const nearStakeDiff=new BN(postUnstakeBalance).sub(new BN(preUnstakeBalance))
+      console.log("nearStakeDiff",ytonFull(nearStakeDiff.toString()))
+     
+      expect(ytonFull(postUnstakeBalance)).toBe(ytonFull(new BN(preUnstakeBalance).add(amountYoctoStNear).toString()))
+    })
+  })
+
+
 })
 

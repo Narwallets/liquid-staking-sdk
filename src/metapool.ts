@@ -115,7 +115,13 @@ export class Metapool {
     return this.call("withdraw", { amount: nearsToWithdraw.toString()})
   }
 
-  unstake(yoctoStNEAR: BN): Promise<void> {
+  /**
+   * calls delayed unstake in the Meta Pool contract
+   * Delayed unstake stNEAR from Meta Pool, you will able to withdraw NEAR in four epochs
+   *
+   * @param {BN} yoctoStNEAR - The amount of yoctstNEAR to unstake
+   */
+  unstake(yoctoStNEAR: BN): Promise<any> {
     return this.call("unstake", { "amount": yoctoStNEAR.toString() })
   }
 
@@ -136,6 +142,11 @@ export class Metapool {
   /// remove liquidity
   nslp_remove_liquidity(lpYoctoShares: number): Promise<RemoveLiquidityResult> {
     return this.call("nslp_remove_liquidity", { "amount": lpYoctoShares.toString()})
+  }
+
+  // get current unstaked amount
+  get_account_unstaked_balance(account_id: string): Promise<string> {
+    return this.view("get_account_unstaked_balance", { account_id: account_id })
   }
 
 }
